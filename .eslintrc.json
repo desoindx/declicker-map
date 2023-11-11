@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "next",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "next/core-web-vitals",
+    "plugin:storybook/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "no-irregular-whitespace": "off",
+    "better-styled-components/sort-declarations-alphabetically": 2,
+    "react/self-closing-comp": "error"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "better-styled-components",
+    "styled-components-a11y",
+  ],
+}

@@ -1,0 +1,29 @@
+.popup {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 200px;
+  background-color: white;
+  color: black;
+  z-index: 1;
+  padding: 16px;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.close {
+  position: absolute;
+  cursor: pointer;
+  top: 8px;
+  right: 8px;
+  padding: 4px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+}
+
+.link {
+  text-decoration: underline;
+}

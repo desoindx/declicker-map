@@ -1,5 +1,7 @@
-import { cities } from "@/components/map/cities"
+import { cities } from "./cities"
 import { Decliker } from "../../types/decliker"
+
+let citiesCopy = { ...cities };
 
 export const getDeclikers = async (): Promise<Decliker[]> => {
   let declikers: any[] = []
@@ -13,6 +15,17 @@ export const getDeclikers = async (): Promise<Decliker[]> => {
     declikers = declikers.concat(result.records)
     offset = result.offset
   }
+
+  for (const key in declikers) {
+    const city = declikers[key].city
+    if (city && !citiesCopy[city]) {
+      const result: any = await fetch(`https://api-adresse.data.gouv.fr/search?q=${city}&limit=1&type=municipality`)
+        .then(response => response.json())
+      citiesCopy[city] = { type: 'Point', coordinates: result.features[0].geometry }
+    }
+  }
+
+
   return declikers.filter(decliker => decliker.fields["Abonné?"]).map(decliker => ({
     id: decliker.id,
     city: decliker.fields.Ville?.trim(),

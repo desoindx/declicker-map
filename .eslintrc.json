@@ -17,10 +17,5 @@
     "better-styled-components/sort-declarations-alphabetically": 2,
     "react/self-closing-comp": "error"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "better-styled-components",
-    "styled-components-a11y",
-  ],
+  "plugins": ["@typescript-eslint", "prettier", "better-styled-components", "styled-components-a11y"]
 }

@@ -9,13 +9,9 @@ export const metadata: Metadata = {
   description: 'La liste des declikers pret de chez vous',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang='fr'>
       <body className={inter.className}>{children}</body>
     </html>
   )

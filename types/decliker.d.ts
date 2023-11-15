@@ -3,7 +3,7 @@ export type Decliker = {
   city: string
   name: string
   geometry: {
-    type: 'Point',
+    type: 'Point'
     coordinates: [number, number]
   }
 }

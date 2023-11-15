@@ -7,4 +7,3 @@ export default async function Home() {
   const declikers = await getDeclikers()
   return <Map declikers={declikers} />
 }
-

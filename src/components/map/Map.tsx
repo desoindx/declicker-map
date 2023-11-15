@@ -26,8 +26,8 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
       zoom: 5,
       center: {
         lat: 46,
-        lon: 2
-      }
+        lon: 2,
+      },
     })
 
     map.current.on('load', () => {
@@ -52,11 +52,11 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: declikers.map(decliker => ({
+            features: declikers.map((decliker) => ({
               type: 'Feature',
               properties: { name: decliker.name, id: decliker.id },
-              geometry: decliker.geometry
-            }))
+              geometry: decliker.geometry,
+            })),
           },
           clusterMaxZoom: 8,
           cluster: true,
@@ -72,17 +72,9 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
           paint: {
             'circle-color': '#f7c744',
             'circle-stroke-color': '#284f42',
-            'circle-radius': [
-              'interpolate',
-              ['linear'],
-              ['get', 'count'],
-              0,
-              4,
-              50,
-              20,
-            ],
+            'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 0, 4, 50, 20],
             'circle-stroke-width': 2,
-          }
+          },
         })
 
         map.current.addLayer({
@@ -95,7 +87,7 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
             'circle-stroke-color': '#284f42',
             'circle-radius': 4,
             'circle-stroke-width': 2,
-          }
+          },
         })
 
         map.current.on('mouseenter', 'declikers', () => {
@@ -109,7 +101,7 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
           }
         })
         map.current.on('click', 'declikers', (e) => {
-          setSelectedDeclikers(e.features?.map(feature => feature.properties as Decliker) || null)
+          setSelectedDeclikers(e.features?.map((feature) => feature.properties as Decliker) || null)
         })
 
         map.current.on('mouseenter', 'declikersCluster', () => {
@@ -133,9 +125,8 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
     })
   }, [])
 
-
   return (
-    <div ref={mapContainer} className={styles.container} >
+    <div ref={mapContainer} className={styles.container}>
       {selectedDeclikers && <Popup declikers={selectedDeclikers} onClose={() => setSelectedDeclikers(null)} />}
     </div>
   )

@@ -6,4 +6,5 @@ export type Decliker = {
     type: 'Point'
     coordinates: [number, number]
   }
+  jobs: string[]
 }

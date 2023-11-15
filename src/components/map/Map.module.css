@@ -1,4 +1,17 @@
+.body {
+  position: relative;
+}
+
 .container {
   height: 100vh;
   width: 100vw;
+}
+
+.select {
+  position: absolute !important;
+  top: 16px;
+  right: 16px;
+  width: 500px;
+  max-width: calc(100vw - 248px);
+  z-index: 1;
 }

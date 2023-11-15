@@ -36,5 +36,6 @@ export const getDeclikers = async (): Promise<Decliker[]> => {
       city: decliker.fields.Ville?.trim(),
       geometry: cities[decliker.fields.Ville?.trim()],
       name: decliker.fields.Nom_Complet_ID,
+      jobs: decliker.fields.Professions
     }))
 }

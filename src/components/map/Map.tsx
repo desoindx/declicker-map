@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import maplibregl, { GeoJSONSource } from 'maplibre-gl'
+import maplibregl, { ExpressionSpecification, GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import styles from './Map.module.css'
 import Popup from './Popup'
 import { Decliker } from '../../../types/decliker'
+import Select, { Options } from 'react-select'
+import { selectStyles } from './SelectStyles'
 
-const Map = ({ declikers }: { declikers: Decliker[] }) => {
+const Map = ({ declikers, professions }: { declikers: Decliker[], professions: Options<{ label: string, value: string }> }) => {
   const map = useRef<maplibregl.Map>()
   const mapContainer = useRef<HTMLDivElement>(null)
   const [selectedDeclikers, setSelectedDeclikers] = useState<Decliker[] | null>(null)
@@ -36,11 +38,6 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
       }
 
       try {
-        const navControl = new maplibregl.NavigationControl({
-          showZoom: true,
-          showCompass: false,
-        })
-        map.current.addControl(navControl, 'top-right')
 
         const scaleControl = new maplibregl.ScaleControl({
           maxWidth: 100,
@@ -133,8 +130,32 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
   }, [])
 
   return (
-    <div ref={mapContainer} className={styles.container}>
-      {selectedDeclikers && <Popup declikers={selectedDeclikers} onClose={() => setSelectedDeclikers(null)} />}
+    <div className={styles.body}>
+      <div ref={mapContainer} className={styles.container}>
+        {selectedDeclikers && <Popup declikers={selectedDeclikers} onClose={() => setSelectedDeclikers(null)} />}
+      </div>
+      <Select
+        placeholder="Filtrer par metier..."
+        isMulti
+        options={professions}
+        className={styles.select}
+        onChange={(values) => {
+          if (map.current) {
+            (map.current.getSource('declikers') as GeoJSONSource).setData({
+              type: 'FeatureCollection',
+              features: declikers
+                .filter(decliker =>
+                  values.length > 0 ? decliker.jobs && values.some(({ value }) => decliker.jobs.includes(value)) : true
+                )
+                .map((decliker) => ({
+                  type: 'Feature',
+                  properties: { name: decliker.name, id: decliker.id },
+                  geometry: decliker.geometry,
+                }))
+            })
+          }
+        }}
+        styles={selectStyles} />
     </div>
   )
 }

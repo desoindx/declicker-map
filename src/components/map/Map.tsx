@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import maplibregl from 'maplibre-gl'
+import maplibregl, { GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import styles from './Map.module.css'
 import Popup from './Popup'
@@ -58,10 +58,11 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
               geometry: decliker.geometry,
             })),
           },
-          clusterMaxZoom: 8,
           cluster: true,
           clusterRadius: 25,
-          clusterProperties: { count: ['+', 1] },
+          clusterProperties: {
+            count: ['+', 1],
+          },
         })
 
         map.current.addLayer({
@@ -72,7 +73,7 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
           paint: {
             'circle-color': '#f7c744',
             'circle-stroke-color': '#284f42',
-            'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 0, 4, 50, 20],
+            'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 4, 50, 20],
             'circle-stroke-width': 2,
           },
         })
@@ -115,8 +116,14 @@ const Map = ({ declikers }: { declikers: Decliker[] }) => {
           }
         })
         map.current.on('click', 'declikersCluster', (e) => {
-          if (map.current) {
-            map.current.flyTo({ animate: true, center: e.lngLat, zoom: map.current.getZoom() + 1 })
+          if (map.current && e.features) {
+            let clusterId = e.features[0].properties.cluster_id;
+            let pointCount = e.features[0].properties.point_count;
+            (map.current.getSource('declikers') as GeoJSONSource).getClusterLeaves(clusterId, pointCount, 0, (errors, features) => {
+              if (features) {
+                setSelectedDeclikers(features.map((feature) => feature.properties as Decliker) || null)
+              }
+            })
           }
         })
       } catch (error) {

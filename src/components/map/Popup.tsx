@@ -12,7 +12,7 @@ const Popup = ({ declikers, onClose }: { declikers: Decliker[]; onClose: () => v
         {declikers.length} Decliker{declikers.length > 1 && 's'}
       </h2>
       {declikers
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort((a, b) => a.name?.localeCompare(b.name || '') || 0)
         .map((decliker) => (
           <p key={decliker.id}>
             <a

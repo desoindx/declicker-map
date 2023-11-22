@@ -56,7 +56,7 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
             })),
           },
           cluster: true,
-          clusterRadius: 25,
+          clusterRadius: 50,
           clusterProperties: {
             count: ['+', 1],
           },
@@ -70,7 +70,7 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
           paint: {
             'circle-color': '#f7c744',
             'circle-stroke-color': '#284f42',
-            'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 4, 50, 20],
+            'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 10, 50, 25],
             'circle-stroke-width': 2,
           },
         })
@@ -83,8 +83,24 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
           paint: {
             'circle-color': '#f7c744',
             'circle-stroke-color': '#284f42',
-            'circle-radius': 4,
+            'circle-radius': 7,
             'circle-stroke-width': 2,
+          },
+        })
+
+        map.current.addLayer({
+          id: 'declikersClusterSymbol',
+          source: 'declikers',
+          type: 'symbol',
+          filter: ['==', 'cluster', true],
+          layout: {
+            'text-field': ['get', 'count'],
+            'text-size': 16,
+            'text-allow-overlap': true,
+            'text-font': ['Noto Sans Bold'],
+          },
+          paint: {
+            'text-color': '#284f42',
           },
         })
 

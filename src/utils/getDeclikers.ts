@@ -3,7 +3,7 @@ import { Decliker } from '../../types/decliker'
 
 let citiesCopy = { ...cities }
 
-export const getDeclikers = async (): Promise<Decliker[]> => {
+export const getDeclikers = async (withName?: boolean): Promise<Decliker[]> => {
   let declikers: any[] = []
   let offset = ''
   while (declikers.length === 0 || offset) {
@@ -35,7 +35,7 @@ export const getDeclikers = async (): Promise<Decliker[]> => {
       id: decliker.id,
       city: decliker.fields.Ville?.trim(),
       geometry: cities[decliker.fields.Ville?.trim()],
-      name: decliker.fields.Nom_Complet_ID,
+      name: withName ? decliker.fields.Nom_Complet_ID : undefined,
       jobs: decliker.fields.Professions
     }))
 }

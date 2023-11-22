@@ -9,7 +9,7 @@ import { Decliker } from '../../../types/decliker'
 import Select, { Options } from 'react-select'
 import { selectStyles } from './SelectStyles'
 
-const Map = ({ declikers, professions }: { declikers: Decliker[], professions: Options<{ label: string, value: string }> }) => {
+const Map = ({ declikers, professions, withName }: { declikers: Decliker[], professions: Options<{ label: string, value: string }>, withName?: boolean }) => {
   const map = useRef<maplibregl.Map>()
   const mapContainer = useRef<HTMLDivElement>(null)
   const [selectedDeclikers, setSelectedDeclikers] = useState<Decliker[] | null>(null)
@@ -88,41 +88,43 @@ const Map = ({ declikers, professions }: { declikers: Decliker[], professions: O
           },
         })
 
-        map.current.on('mouseenter', 'declikers', () => {
-          if (map.current) {
-            map.current.getCanvas().style.cursor = 'pointer'
-          }
-        })
-        map.current.on('mouseleave', 'declikers', () => {
-          if (map.current) {
-            map.current.getCanvas().style.cursor = ''
-          }
-        })
-        map.current.on('click', 'declikers', (e) => {
-          setSelectedDeclikers(e.features?.map((feature) => feature.properties as Decliker) || null)
-        })
+        if (withName) {
+          map.current.on('mouseenter', 'declikers', () => {
+            if (map.current) {
+              map.current.getCanvas().style.cursor = 'pointer'
+            }
+          })
+          map.current.on('mouseleave', 'declikers', () => {
+            if (map.current) {
+              map.current.getCanvas().style.cursor = ''
+            }
+          })
+          map.current.on('click', 'declikers', (e) => {
+            setSelectedDeclikers(e.features?.map((feature) => feature.properties as Decliker) || null)
+          })
 
-        map.current.on('mouseenter', 'declikersCluster', () => {
-          if (map.current) {
-            map.current.getCanvas().style.cursor = 'pointer'
-          }
-        })
-        map.current.on('mouseleave', 'declikersCluster', () => {
-          if (map.current) {
-            map.current.getCanvas().style.cursor = ''
-          }
-        })
-        map.current.on('click', 'declikersCluster', (e) => {
-          if (map.current && e.features) {
-            let clusterId = e.features[0].properties.cluster_id;
-            let pointCount = e.features[0].properties.point_count;
-            (map.current.getSource('declikers') as GeoJSONSource).getClusterLeaves(clusterId, pointCount, 0, (errors, features) => {
-              if (features) {
-                setSelectedDeclikers(features.map((feature) => feature.properties as Decliker) || null)
-              }
-            })
-          }
-        })
+          map.current.on('mouseenter', 'declikersCluster', () => {
+            if (map.current) {
+              map.current.getCanvas().style.cursor = 'pointer'
+            }
+          })
+          map.current.on('mouseleave', 'declikersCluster', () => {
+            if (map.current) {
+              map.current.getCanvas().style.cursor = ''
+            }
+          })
+          map.current.on('click', 'declikersCluster', (e) => {
+            if (map.current && e.features) {
+              let clusterId = e.features[0].properties.cluster_id;
+              let pointCount = e.features[0].properties.point_count;
+              (map.current.getSource('declikers') as GeoJSONSource).getClusterLeaves(clusterId, pointCount, 0, (errors, features) => {
+                if (features) {
+                  setSelectedDeclikers(features.map((feature) => feature.properties as Decliker) || null)
+                }
+              })
+            }
+          })
+        }
       } catch (error) {
         console.error('Could not load map', error)
       }

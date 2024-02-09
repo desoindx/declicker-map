@@ -9,7 +9,15 @@ import { Decliker } from '../../../types/decliker'
 import Select, { Options } from 'react-select'
 import { selectStyles } from './SelectStyles'
 
-const Map = ({ declikers, professions, withName }: { declikers: Decliker[], professions: Options<{ label: string, value: string }>, withName?: boolean }) => {
+const Map = ({
+  declikers,
+  professions,
+  withName,
+}: {
+  declikers: Decliker[]
+  professions: Options<{ label: string; value: string }>
+  withName?: boolean
+}) => {
   const map = useRef<maplibregl.Map>()
   const mapContainer = useRef<HTMLDivElement>(null)
   const [selectedDeclikers, setSelectedDeclikers] = useState<Decliker[] | null>(null)
@@ -38,7 +46,6 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
       }
 
       try {
-
         const scaleControl = new maplibregl.ScaleControl({
           maxWidth: 100,
           unit: 'metric',
@@ -131,13 +138,18 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
           })
           map.current.on('click', 'declikersCluster', (e) => {
             if (map.current && e.features) {
-              let clusterId = e.features[0].properties.cluster_id;
-              let pointCount = e.features[0].properties.point_count;
-              (map.current.getSource('declikers') as GeoJSONSource).getClusterLeaves(clusterId, pointCount, 0, (errors, features) => {
-                if (features) {
-                  setSelectedDeclikers(features.map((feature) => feature.properties as Decliker) || null)
+              let clusterId = e.features[0].properties.cluster_id
+              let pointCount = e.features[0].properties.point_count
+              ;(map.current.getSource('declikers') as GeoJSONSource).getClusterLeaves(
+                clusterId,
+                pointCount,
+                0,
+                (errors, features) => {
+                  if (features) {
+                    setSelectedDeclikers(features.map((feature) => feature.properties as Decliker) || null)
+                  }
                 }
-              })
+              )
             }
           })
         }
@@ -153,27 +165,28 @@ const Map = ({ declikers, professions, withName }: { declikers: Decliker[], prof
         {selectedDeclikers && <Popup declikers={selectedDeclikers} onClose={() => setSelectedDeclikers(null)} />}
       </div>
       <Select
-        placeholder="Filtrer par metier..."
+        placeholder='Filtrer par metier...'
         isMulti
         options={professions}
         className={styles.select}
         onChange={(values) => {
           if (map.current) {
-            (map.current.getSource('declikers') as GeoJSONSource).setData({
+            ;(map.current.getSource('declikers') as GeoJSONSource).setData({
               type: 'FeatureCollection',
               features: declikers
-                .filter(decliker =>
+                .filter((decliker) =>
                   values.length > 0 ? decliker.jobs && values.some(({ value }) => decliker.jobs.includes(value)) : true
                 )
                 .map((decliker) => ({
                   type: 'Feature',
                   properties: { name: decliker.name, id: decliker.id },
                   geometry: decliker.geometry,
-                }))
+                })),
             })
           }
         }}
-        styles={selectStyles} />
+        styles={selectStyles}
+      />
     </div>
   )
 }

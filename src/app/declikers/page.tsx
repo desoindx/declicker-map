@@ -7,5 +7,6 @@ export const revalidate = 3600 * 24
 export default async function Home() {
   const declikers = await getDeclikers(true)
   const professions = await getProfessions()
+
   return <Map withName declikers={declikers} professions={professions} />
 }

@@ -73,6 +73,7 @@ export const cities: Record<string, { type: 'Point'; coordinates: [number, numbe
   'Boulogne-Billancourt': { type: 'Point', coordinates: [2.242716, 48.836976] },
   Clichy: { type: 'Point', coordinates: [2.304932, 48.90348] },
   'Clichy (proche Paris)': { type: 'Point', coordinates: [2.304932, 48.90348] },
+  'Clichy 92110': { type: 'Point', coordinates: [2.304932, 48.90348] },
   'Proche de rennes': { type: 'Point', coordinates: [-1.68365, 48.110899] },
   Grenoble: { type: 'Point', coordinates: [5.7243, 45.182081] },
   Arcueil: { type: 'Point', coordinates: [2.333471, 48.805178] },
@@ -127,4 +128,7 @@ export const cities: Record<string, { type: 'Point'; coordinates: [number, numbe
   Nanterre: { type: 'Point', coordinates: [2.202314, 48.898095] },
   'Audun le Tiche': { type: 'Point', coordinates: [5.949476, 49.469003] },
   Limoges: { type: 'Point', coordinates: [1.221254, 45.856159] },
+  Angoulême: { type: 'Point', coordinates: [0.15, 45.65] },
+  'Le Pré-Saint-Gervais': { type: 'Point', coordinates: [2.405377, 48.884145] },
+  "Robion (à côté de L'Isle sur la Sorgue)": { type: 'Point', coordinates: [5.058675, 43.91503] },
 }

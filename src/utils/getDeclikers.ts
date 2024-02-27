@@ -29,7 +29,7 @@ export const getDeclikers = async (withName?: boolean): Promise<Decliker[]> => {
         `https://api-adresse.data.gouv.fr/search?q=${city}&limit=1&type=municipality`
       ).then((response) => response.json())
       if (result.features[0]) {
-        citiesCopy[city] = { type: 'Point', coordinates: result.features[0].geometry }
+        citiesCopy[city] = result.features[0].geometry
       }
     }
   }

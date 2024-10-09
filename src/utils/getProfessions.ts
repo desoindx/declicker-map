@@ -7,6 +7,7 @@ export const getProfessions = async () =>
     .then((response) => response.json())
     .then((body) =>
       body.records
+        .filter((record: any) => record.fields.Profession_Name)
         .sort((a: any, b: any) => a.fields.Profession_Name.localeCompare(b.fields.Profession_Name))
         .map((record: any) => ({
           label: record.fields.Profession_Name,

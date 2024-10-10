@@ -13,10 +13,12 @@ const Map = ({
   declikers,
   professions,
   withName,
+  noFigures,
 }: {
   declikers: Decliker[]
   professions: Options<{ label: string; value: string }>
   withName?: boolean
+  noFigures?: boolean
 }) => {
   const map = useRef<maplibregl.Map>()
   const mapContainer = useRef<HTMLDivElement>(null)
@@ -95,21 +97,24 @@ const Map = ({
           },
         })
 
-        map.current.addLayer({
-          id: 'declikersClusterSymbol',
-          source: 'declikers',
-          type: 'symbol',
-          filter: ['==', 'cluster', true],
-          layout: {
-            'text-field': ['get', 'count'],
-            'text-size': 16,
-            'text-allow-overlap': true,
-            'text-font': ['Noto Sans Bold'],
-          },
-          paint: {
-            'text-color': '#284f42',
-          },
-        })
+        {
+          !noFigures &&
+            map.current.addLayer({
+              id: 'declikersClusterSymbol',
+              source: 'declikers',
+              type: 'symbol',
+              filter: ['==', 'cluster', true],
+              layout: {
+                'text-field': ['get', 'count'],
+                'text-size': 16,
+                'text-allow-overlap': true,
+                'text-font': ['Noto Sans Bold'],
+              },
+              paint: {
+                'text-color': '#284f42',
+              },
+            })
+        }
 
         if (withName) {
           map.current.on('mouseenter', 'declikers', () => {
